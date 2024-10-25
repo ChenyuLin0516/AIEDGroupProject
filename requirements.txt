@@ -1,0 +1,11 @@
+chromadb
+chainlit
+crewai
+crewai[tools]
+langchain-groq
+langchain_openai
+langchain_google_genai
+langchain_community
+openai
+arxiv
+PyMuPDF
