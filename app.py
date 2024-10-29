@@ -72,21 +72,42 @@ async def on_chat_start():
     )
 
 # Create agents for questioning and evaluation
+    LearningContentAnalyst = Agent(
+        role='LearningContentAnalyst',
+        goal='Analyze content from PDF and provide brief summary for context.',
+        backstory="You’re an expert in analyzing content in the uploaded materials and summarizing them so that they are easily digestible.",
+        tools=[],
+        llm=chat_model
+    )
+    Evaluator = Agent(
+        role='Evaluator',
+        goal='Evaluate the user’s answer and provide constructive feedback',
+        backstory="You’re an expert in evaluating students’ prior knowledge based on the answers in the pre-test and providing suggestions to the QuestionGenerator during the test.",
+        tools=[],
+        llm=chat_model
+    )
     QuestioneGenerator = Agent(
         role='QuestioneGenerator',
         goal='Generate questions about the uploaded document to assess user understanding',
-        backstory="You are an expert in generating questions based on the summary of the learning content of the week. You like to measure students’ understanding of the learning materials with the right type of question for specific learning content by comparing students’ performance in the pre-test and post-test.",
+        backstory="You are an expert in generating questions based on the summary of the learning content for the week. You like to mearsure students' understanding of the learning materials with the right type of questions for specific leanring contentby comparing students' performance in the pre-test and post-test.",
         tools=[],
         llm=chat_model
     )
-
-    evaluator = Agent(
-        role='Evaluator',
-        goal='Evaluate the user’s answer and provide constructive feedback',
-        backstory="You’re an expert in evaluating students’ prior knowledge  based on the answers in the pre-test and providing suggestions to Question Generator during the test. ",
+    Facilitator = Agent(
+        role='Facilitator',
+        goal='Facilitate conversation with user to encourage active thinking and aid their understanding',
+        backstory="You’re an expert in facilitating learning through asking questions related to the summary of the learning content and students’ pre-test performance. You like to encourage students’ active thinking with questions. You normally ask questions for three rounds of conversation and then provide explanations and examples if students still don’t understand.",
         tools=[],
         llm=chat_model
     )
+    SummaryExpert = Agent(
+        role='SummaryExpert',
+        goal='Summarize user conversation history and learning content',
+        backstory="You’re an expert in summarizing the conversation history between students and the AI agents. Your summary incorporates the summary of the learning content with the record of students’ question answering. The summary can be a supplemented materials for students to review later for their study.",
+        tools=[],
+        llm=chat_model
+    )
+   
 
 #Plz Add all the agents we need！
 # Learning Content Analyst，Facilitator，Summary Expert 
