@@ -109,24 +109,60 @@ async def on_chat_start():
     )
    
 
-#Plz Add all the agents we need！
-# Learning Content Analyst，Facilitator，Summary Expert 
-
-
-
     # Define tasks for each agent
+    preparation = Task(
+        description="greet students, ask for uploading weekly learning material, analyze the weekly learning materials",
+        expected_output="A summary of the weekly learning materials with key learning content",
+        agent=LearningContentAnalyst,
+    )
+    
     question_generating = Task(
-        description="generate 3 questions based on the uploaded learning materials",
+        description="generate 3 questions based on the the summary of the weekly learning materials",
+        expected_output="A list of 3 questions",
+        agent=QuestioneGenerator,
+    )
+    
+    question_asking = Task(
+        description="ask students the 3 questions one by one",
+        expected_output="A report of the QA session, including the questions and answers",
+        agent=QuestioneGenerator,
+    )
+
+    pretest_evaluation = Task(
+        description="evaluate the student’s knowledge based on the QA report",
+        expected_output="an evaluation report with assessment summary of each question",
+        agent=Evaluator,
+    )
+
+    learning_session = Task(
+        description="based on learning materials and pre-test evaluation, guide students to learn through asking 3 questions to encourage students to actively thinking and then giving explanation",
+        expected_output="A report of the learning content",
+        agent=Facilitator,
+    )
+
+    question_generating = Task(
+        description="generate 3 questions based on the report of the learning content from learning_session",
         expected_output="A list of 3 questions",
         agent=QuestioneGenerator,
     )
 
-    pretest_evaluate = Task(
-        description="evaluate the student’s knowledge based on the QA report",
-        expected_output="an evaluation report with assessment summary of each question",
-        agent=evaluator,
+    question_asking = Task(
+        description="ask students the 3 questions one by one",
+        expected_output="A report of the QA session, including the questions and answers",
+        agent=QuestioneGenerator,
     )
-    #Plz Add all the tasks we need！
+
+    posttest_evaluation = Task(
+        description="evaluate the student’s knowledge based on the QA report",
+        expected_output="a post-test evaluation report with an assessment summary of each question",
+        agent=Evaluator,
+    )
+
+    preclass_summary_generating = Task(
+        description="generate a summary in PDF document format with the summary of the learning content from learning_session and the post-test evaluation report of performance from posttest_evaluation",
+        expected_output="A list of 3 questions",
+        agent=QuestioneGenerator,
+    )
 
     # Create a crew to handle the sequential execution of tasks
     crew = Crew(
